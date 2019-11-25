@@ -22,7 +22,6 @@ from distutils.util import strtobool
 import boto3
 
 import clamav
-import metrics
 from common import AV_DEFINITION_S3_BUCKET
 from common import AV_DEFINITION_S3_PREFIX
 from common import AV_DELETE_INFECTED_FILES
@@ -256,9 +255,6 @@ def lambda_handler(event, context):
             result_time,
         )
 
-    metrics.send(
-        env=ENV, bucket=s3_object.bucket_name, key=s3_object.key, status=scan_result
-    )
     # Delete downloaded file to free up room on re-usable lambda function container
     try:
         os.remove(file_path)
